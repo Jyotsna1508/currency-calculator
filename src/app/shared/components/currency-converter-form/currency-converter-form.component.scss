@@ -1,0 +1,32 @@
+.amount-input{
+    width: 80%;
+    height: 40px;
+}
+.flex-display{
+    align-items: center;
+}
+.margin-top{
+    margin-top: -13px;
+}
+.convert-button-container{
+    justify-content: end;
+    button {
+        width: 87%;
+    }
+}
+.padding-top {
+    padding-top: 5px;
+}
+.results-container{
+    margin-top: 20px;
+    .card-container{
+        height: 75%;
+    }
+    .col-sm-4{
+        margin-top: 15px;;
+    }
+    button{
+        width: 64%;
+        margin-top: 10px;
+    }
+}

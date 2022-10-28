@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>Currency Exchange</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <app-currency-converter-form (sendSelectedFilter)="updatedAppliedConversion($event)"></app-currency-converter-form>
+        </div>
+        <div class="col-sm-12">
+            <app-conversion-details *ngIf="showConversionDetails"
+            [appliedConversionFilter]="updatedAppliedConversionData"></app-conversion-details>
+        </div>
+    </div>
+</div>

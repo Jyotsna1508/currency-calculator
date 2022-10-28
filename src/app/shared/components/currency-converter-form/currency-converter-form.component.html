@@ -1,0 +1,68 @@
+<form [formGroup]="currencyConverterForm" (ngSubmit)="convertCurrency()" novalidate 
+*ngIf="conversions && conversions.length">
+    <div class="row flex-display">
+        <div class="col-sm-4 margin-top">
+            <label>
+                Amount
+            </label>
+            <div>
+                <input class="amount-input" placeholder="Amount" id="amount"
+                [formControlName]="formNames.Amount" type="number">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label>
+                From 
+            </label>
+                <select
+                class="custom-select mb-3"
+                [formControlName]="formNames.FromCurrency"
+                [(ngModel)]="fromDropdownName"
+                (ngModelChange)="conversionTypechange()"
+                >
+                <option *ngFor="let conversion of conversions"
+                 [ngValue]="conversion.name">
+                    {{ conversion.name }}
+                </option>
+                </select>
+        </div>
+        <div class="col-sm-1">
+            <i class="fa fa-exchange fa-2x" aria-hidden="true" (click)="swapCurrencies()"></i>
+        </div>
+        <div class="col-sm-3">
+            <label>
+                To
+            </label>
+            <select
+            class="custom-select mb-3"
+            [formControlName]="formNames.ToCurrency"
+            [(ngModel)]="toDropdownName"
+            (ngModelChange)="conversionTypechange()"
+            >
+            <option *ngFor="let conversion of conversions" [ngValue]="conversion.name">
+                {{ conversion.name }}
+            </option>
+            </select>
+        </div>
+    </div>
+</form>
+<div class="row convert-button-container">
+    <div class="col-sm-8 align-self-end">
+        <button type="submit" class="btn btn-primary" (click)="convertCurrency()" [disabled]="currencyConverterForm.invalid">Convert</button>
+    </div>
+</div>
+<div class="row results-container">
+    <div class="col-sm-4">
+        <div class="card card-container">
+            <div class="card-body padding-top">1 {{fromDropdownName}} = {{toCurrencyRate}} {{toDropdownName}}</div>
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <div class="card">
+            <div class="card-body">{{result}} {{toDropdownName}}</div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary" [disabled]="currencyConverterForm.invalid">More Details</button>
+    </div>
+</div>
