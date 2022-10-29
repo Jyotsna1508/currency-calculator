@@ -11,18 +11,16 @@ export class CurrencyConverterComponent implements OnInit {
   updatedAppliedConversionData: AppliedConversionData = {
     amount: 1,
     fromCurrency: Currency.EUR,
+    toCurrency: Currency.HRK,
     currencyRates: {}
   };
-  showConversionDetails: boolean = false;
   constructor() { }
 
   ngOnInit(): void {
   }
 
   updatedAppliedConversion(filteredConversion: AppliedConversionData){
-    this.showConversionDetails = false;
     this.updatedAppliedConversionData = filteredConversion;
-    this.showConversionDetails = true;
   }
 
 }

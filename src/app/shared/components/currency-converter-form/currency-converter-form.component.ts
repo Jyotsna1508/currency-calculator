@@ -1,10 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Currency } from '../../enums/currency';
 import { FormNames } from '../../enums/form-names';
 import { ExchangeRates } from '../../interfaces/exchange-rates';
@@ -15,13 +16,12 @@ import { ExchangeRates } from '../../interfaces/exchange-rates';
 })
 export class CurrencyConverterFormComponent implements OnInit {
   currencyConverterForm: FormGroup = new FormGroup({
-    amount: new FormControl('1'),
+    amount: new FormControl(''),
     fromCurrency: new FormControl(''),
     toCurrency: new FormControl(''),
   });
   fromCurrencyRate: number = 0;
   toCurrencyRate: number = 0;
-
   exchangeRates: ExchangeRates = {
     base: Currency.EUR,
     rates: {
@@ -77,14 +77,21 @@ export class CurrencyConverterFormComponent implements OnInit {
   ];
 
   result: string = '0';
-  amount: number = 0;
+  amount: number = 1;
   fromDropdownName: string = Currency.EUR;
   toDropdownName: string = Currency.HRK;
   formNames = FormNames;
+  @Input() showMoreDetails: boolean = false
   @Output() sendSelectedFilter = new EventEmitter;
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.fromDropdownName =
+    this.activatedRoute.snapshot.queryParams['from'] || Currency.EUR;
+    this.toDropdownName =
+    this.activatedRoute.snapshot.queryParams['to'] || Currency.HRK;
     this.currencyConverterForm = this.initForm(
       this.fromDropdownName,
       this.toDropdownName
@@ -97,6 +104,7 @@ export class CurrencyConverterFormComponent implements OnInit {
       this.exchangeRates.rates[
         this.currencyConverterForm.get(FormNames.ToCurrency)?.value
       ];
+      this.convertCurrency();
       this.sendUpdatedFilterdata();
   }
   convertCurrency() {
@@ -142,8 +150,15 @@ export class CurrencyConverterFormComponent implements OnInit {
     this.sendSelectedFilter.emit({
       amount: this.amount,
       fromCurrency: this.fromDropdownName,
+      toCurrency: this.toCurrencyRate,
       currencyRates: this.exchangeRates.rates
     });
+  }
+  navigateToCurrencyDetails(){
+    this.router.navigate(
+      ['/exchange-details'],
+      { queryParams: { from: this.fromDropdownName, to: this.toDropdownName } }
+    );
   }
   private initForm(fromCurrency: string, toCurrency: string) {
     return this.formBuilder.group({

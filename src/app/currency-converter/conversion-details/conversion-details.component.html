@@ -1,1 +1,12 @@
-<p>conversion-details works!</p>
+<div class="row" *ngIf="currenciesList && currenciesList.length">
+    <div class="col-sm-4 padding-top" *ngFor="let detail of currenciesList">
+        <div class="card card-container">
+            <div class="card-body min-height">
+                <span>
+                {{detail.fromAmount}} {{detail.fromCurrencyname}} = 
+                {{detail.toAmount}} {{detail.toCurrencyName}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

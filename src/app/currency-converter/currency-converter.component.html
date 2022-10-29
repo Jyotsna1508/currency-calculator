@@ -4,13 +4,13 @@
             <h4>Currency Exchange</h4>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <app-currency-converter-form (sendSelectedFilter)="updatedAppliedConversion($event)"></app-currency-converter-form>
+    <div class="row converter-container">
+        <div class="col-sm-12 convertor-form">
+            <app-currency-converter-form (sendSelectedFilter)="updatedAppliedConversion($event)"
+            [showMoreDetails]="true"></app-currency-converter-form>
         </div>
         <div class="col-sm-12">
-            <app-conversion-details *ngIf="showConversionDetails"
-            [appliedConversionFilter]="updatedAppliedConversionData"></app-conversion-details>
+            <app-conversion-details [appliedConversionFilter]="updatedAppliedConversionData"></app-conversion-details>
         </div>
     </div>
 </div>

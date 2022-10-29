@@ -14,8 +14,8 @@ export class HeaderComponent implements OnInit {
   }
 
   
-  navigateToCurrencyDetails(){
-    this.router.navigateByUrl('/exchange-details');
+  navigateToCurrencyDetails(fromCurrency: string, toCurrency: string){
+    this.router.navigate(['/exchange-details'], { queryParams: { from: fromCurrency, to:toCurrency }});
   }
 
 }

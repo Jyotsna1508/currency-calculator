@@ -57,12 +57,13 @@
             <div class="card-body padding-top">1 {{fromDropdownName}} = {{toCurrencyRate}} {{toDropdownName}}</div>
         </div>
     </div>
-    <div class="col-sm-5">
+    <div [ngClass]="showMoreDetails ? 'col-sm-5': 'col-sm-7'">
         <div class="card">
             <div class="card-body">{{result}} {{toDropdownName}}</div>
         </div>
     </div>
-    <div class="col-sm-3">
-        <button type="submit" class="btn btn-primary" [disabled]="currencyConverterForm.invalid">More Details</button>
+    <div class="col-sm-3" *ngIf="showMoreDetails">
+        <button type="submit" class="btn btn-primary" (click)="navigateToCurrencyDetails()"
+        [disabled]="currencyConverterForm.invalid">More Details</button>
     </div>
 </div>
