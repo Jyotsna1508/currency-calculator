@@ -103,9 +103,21 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "angular-currency-convertor"
+  "defaultProject": "angular-currency-convertor",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

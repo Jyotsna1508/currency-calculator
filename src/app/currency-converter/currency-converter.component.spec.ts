@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CurrencyConverterComponent } from './currency-converter.component';
 
 describe('CurrencyConverterComponent', () => {
@@ -21,5 +20,9 @@ describe('CurrencyConverterComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should contain "Currency Exchange"', () => {
+    const bannerElement: HTMLElement = fixture.nativeElement;
+    expect(bannerElement.textContent).toContain('Currency Exchange');
   });
 });

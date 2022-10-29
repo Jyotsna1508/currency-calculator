@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Currency } from '../shared/enums/currency';
 import { AppliedConversionData } from '../shared/interfaces/coversion-data';
 
@@ -7,18 +7,13 @@ import { AppliedConversionData } from '../shared/interfaces/coversion-data';
   templateUrl: './currency-converter.component.html',
   styleUrls: ['./currency-converter.component.scss']
 })
-export class CurrencyConverterComponent implements OnInit {
+export class CurrencyConverterComponent {
   updatedAppliedConversionData: AppliedConversionData = {
     amount: 1,
     fromCurrency: Currency.EUR,
     toCurrency: Currency.HRK,
     currencyRates: {}
   };
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
   updatedAppliedConversion(filteredConversion: AppliedConversionData){
     this.updatedAppliedConversionData = filteredConversion;
   }

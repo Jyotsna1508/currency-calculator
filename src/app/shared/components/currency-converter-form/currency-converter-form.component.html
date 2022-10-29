@@ -48,13 +48,13 @@
 </form>
 <div class="row convert-button-container">
     <div class="col-sm-8 align-self-end">
-        <button type="submit" class="btn btn-primary" (click)="convertCurrency()" [disabled]="currencyConverterForm.invalid">Convert</button>
+        <button type="submit" class="btn btn-primary" (click)="convertCurrency()" [disabled]="currencyConverterForm.invalid || !showMoreDetails">Convert</button>
     </div>
 </div>
 <div class="row results-container">
     <div class="col-sm-4">
         <div class="card card-container">
-            <div class="card-body padding-top">1 {{fromDropdownName}} = {{toCurrencyRate}} {{toDropdownName}}</div>
+            <div class="card-body padding-top" *ngIf="toCurrencyRate > 0">1 {{fromDropdownName}} = {{toCurrencyRate}} {{toDropdownName}}</div>
         </div>
     </div>
     <div [ngClass]="showMoreDetails ? 'col-sm-5': 'col-sm-7'">

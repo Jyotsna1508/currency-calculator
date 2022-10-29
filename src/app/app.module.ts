@@ -9,6 +9,9 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { CurrencyConverterFormComponent } from './shared/components/currency-converter-form/currency-converter-form.component';
 import { ConversionDetailsComponent } from './currency-converter/conversion-details/conversion-details.component';
 import { HistoricalDataComponent } from './currency-details/historical-data/historical-data.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,9 +25,14 @@ import { HistoricalDataComponent } from './currency-details/historical-data/hist
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ {
+    provide : HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi   : true,
+  },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

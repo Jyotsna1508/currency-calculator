@@ -4,5 +4,5 @@ export interface AppliedConversionData {
     amount: number;
     fromCurrency: string;
     toCurrency: string;
-    currencyRates: StringNumberPair;
+    currencyRates?: StringNumberPair;
 }

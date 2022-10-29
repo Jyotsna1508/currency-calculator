@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,14 +6,10 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void {
-  }
-
-  
   navigateToCurrencyDetails(fromCurrency: string, toCurrency: string){
     this.router.navigate(['/exchange-details'], { queryParams: { from: fromCurrency, to:toCurrency }});
   }

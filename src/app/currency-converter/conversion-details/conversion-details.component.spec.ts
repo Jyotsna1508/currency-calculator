@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ConversionDetailsComponent } from './conversion-details.component';
 
 describe('ConversionDetailsComponent', () => {

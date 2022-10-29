@@ -1,63 +1,73 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import {  Chart, registerables} from "chart.js";
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { Chart, registerables } from 'chart.js';
+import { rateI } from 'src/app/shared/interfaces/conversion-response';
 @Component({
   selector: 'app-historical-data',
   templateUrl: './historical-data.component.html',
-  styleUrls: ['./historical-data.component.scss']
+  styleUrls: ['./historical-data.component.scss'],
 })
-export class HistoricalDataComponent implements OnInit, OnChanges{
+export class HistoricalDataComponent implements OnChanges {
   public chart: any;
   @Input() fromCurrencyHeader: string = '';
   @Input() toCurrencyHeader: string = '';
-  constructor(){
+  @Input() historicalData: rateI = {};
+  constructor() {
     Chart.register(...registerables);
   }
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
     this.fromCurrencyHeader = changes.fromCurrencyHeader.currentValue;
     this.toCurrencyHeader = changes.toCurrencyHeader.currentValue;
-  }
-  ngOnInit(): void {
+    this.historicalData = changes.historicalData.currentValue;
     this.createChart();
   }
-  createChart(){
-    this.chart = new Chart("MyChart", {
+
+  createChart() {
+    let toCurrencyData = [];
+    let fromCurrencyData = [];
+    const xAxesLabels = Object.keys(this.historicalData);
+    for (let rate in this.historicalData){
+      toCurrencyData.push(this.historicalData[rate][this.toCurrencyHeader]);
+      fromCurrencyData.push(this.historicalData[rate][this.fromCurrencyHeader]);
+    }
+    this.chart = new Chart('MyChart', {
       type: 'line',
       data: {
-        labels: ['2022-05-10', '2022-05-11', '2022-05-12','2022-05-13',
-								 '2022-05-14', '2022-05-15', '2022-05-16','2022-05-17', ], 
-	       datasets: [
+        labels: xAxesLabels,
+        datasets: [
           {
             label: this.fromCurrencyHeader,
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
-            backgroundColor: 'blue'
+            data: fromCurrencyData,
+            backgroundColor: 'blue',
           },
           {
             label: this.toCurrencyHeader,
-            data: ['542', '542', '536', '327', '17',
-									 '0.00', '538', '541'],
-            backgroundColor: 'limegreen'
-          }  
-        ]
+            data: toCurrencyData,
+            backgroundColor: 'limegreen',
+          },
+        ],
       },
       options: {
-        aspectRatio:2.5,
+        aspectRatio: 2.5,
         scales: {
           y: {
             title: {
               display: true,
-              text: 'Rates'
-            }
+              text: 'Rates',
+            },
           },
           X: {
             title: {
               display: true,
-              text: 'Months'
-            }
-          }
-        }     
-      }
-      
+              text: 'Months',
+            },
+          },
+        },
+      },
     });
   }
 }

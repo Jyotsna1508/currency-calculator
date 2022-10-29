@@ -1,4 +1,9 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ExchangeRatesService } from '../../services/exchange-rates.service';
 
 import { CurrencyConverterFormComponent } from './currency-converter-form.component';
 
@@ -8,7 +13,9 @@ describe('CurrencyConvertorFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CurrencyConverterFormComponent ]
+      imports: [RouterTestingModule, ReactiveFormsModule, HttpClientTestingModule],
+      declarations: [ CurrencyConverterFormComponent ],
+      providers: [ExchangeRatesService]
     })
     .compileComponents();
   });
@@ -21,5 +28,12 @@ describe('CurrencyConvertorFormComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should navigate', () => {
+    const routerstub: Router = TestBed.inject(Router);
+    spyOn(routerstub, 'navigate');
+    component.navigateToCurrencyDetails();
+    expect(routerstub.navigate).toHaveBeenCalledWith(['/exchange-details'], { queryParams: { from: 'EUR', to: 'HRK' }});
   });
 });

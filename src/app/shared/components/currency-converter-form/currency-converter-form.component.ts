@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,9 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CurrencyConstants } from '../../constants';
 import { Currency } from '../../enums/currency';
 import { FormNames } from '../../enums/form-names';
 import { ExchangeRates } from '../../interfaces/exchange-rates';
+import { ExchangeRatesService } from '../../services/exchange-rates.service';
 @Component({
   selector: 'app-currency-converter-form',
   templateUrl: './currency-converter-form.component.html',
@@ -22,60 +24,8 @@ export class CurrencyConverterFormComponent implements OnInit {
   });
   fromCurrencyRate: number = 0;
   toCurrencyRate: number = 0;
-  exchangeRates: ExchangeRates = {
-    base: Currency.EUR,
-    rates: {
-      AUD: 1.566015,
-      HRK: 1.562315,
-      INR: 0.562315,
-      CAD: 1.560132,
-      CHF: 1.154727,
-      CNY: 7.827874,
-      EUR: 0.882047,
-      JPY: 132.360679,
-      USD: 1.23396,
-    },
-  };
-
-  conversions = [
-    {
-      id: 1,
-      name: 'HRK',
-    },
-    {
-      id: 2,
-      name: 'INR',
-    },
-    {
-      id: 3,
-      name: 'JPY',
-    },
-    {
-      id: 4,
-      name: 'EUR',
-    },
-    {
-      id: 5,
-      name: 'CAD',
-    },
-    {
-      id: 6,
-      name: 'CHF',
-    },
-    {
-      id: 7,
-      name: 'CNY',
-    },
-    {
-      id: 8,
-      name: 'USD',
-    },
-    {
-      id: 8,
-      name: 'USD',
-    },
-  ];
-
+  exchangeRates: ExchangeRates = CurrencyConstants.exchangeRates;
+  conversions = CurrencyConstants.displayedCountry;
   result: string = '0';
   amount: number = 1;
   fromDropdownName: string = Currency.EUR;
@@ -85,7 +35,9 @@ export class CurrencyConverterFormComponent implements OnInit {
   @Output() sendSelectedFilter = new EventEmitter;
   constructor(private formBuilder: FormBuilder,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {}
+    private activatedRoute: ActivatedRoute,
+    private exchangeRatesService: ExchangeRatesService,
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.fromDropdownName =
@@ -96,16 +48,8 @@ export class CurrencyConverterFormComponent implements OnInit {
       this.fromDropdownName,
       this.toDropdownName
     );
-    this.fromCurrencyRate =
-      this.exchangeRates.rates[
-        this.currencyConverterForm.get(FormNames.FromCurrency)?.value
-      ];
-    this.toCurrencyRate =
-      this.exchangeRates.rates[
-        this.currencyConverterForm.get(FormNames.ToCurrency)?.value
-      ];
-      this.convertCurrency();
-      this.sendUpdatedFilterdata();
+    this.getExchangeRates(Currency.EUR);
+    this.cdr.detectChanges();
   }
   convertCurrency() {
     this.fromCurrencyRate =
@@ -123,7 +67,29 @@ export class CurrencyConverterFormComponent implements OnInit {
       this.fromCurrencyRate,
       this.toCurrencyRate
     );
+    this.cdr.detectChanges();
     this.sendUpdatedFilterdata();
+  }
+  getExchangeRates(baseCurrencyCode: string) {
+    this.exchangeRatesService
+      .getLatestExchangeRates(baseCurrencyCode)
+      .subscribe(
+        (exchangeRate: ExchangeRates): void => {
+          this.exchangeRates = exchangeRate;
+          this.fromCurrencyRate =
+          this.exchangeRates.rates[
+            this.currencyConverterForm.get(FormNames.FromCurrency)?.value
+          ];
+          this.toCurrencyRate =
+            this.exchangeRates.rates[
+              this.currencyConverterForm.get(FormNames.ToCurrency)?.value
+            ];
+            this.convertCurrency();
+            this.sendUpdatedFilterdata();
+        },
+        (error: Error): void => {
+          console.error(`Error: ${error.message}`);
+        });
   }
 
   conversionTypechange() {
