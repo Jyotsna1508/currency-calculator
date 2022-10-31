@@ -51,11 +51,12 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Application Screenshot
 <img width="949" alt="image" src="https://user-images.githubusercontent.com/29199486/198946122-7db81fd5-6830-4ee0-bd05-e02fcd810601.png">
+![image](https://user-images.githubusercontent.com/29199486/199003353-90954e52-1173-4d3a-b391-af33b3ece845.png)
 
-<img width="960" alt="image" src="https://user-images.githubusercontent.com/29199486/198958233-f44c4082-249f-437c-bd67-0b6d67710982.png">
 
 ##Test Coverage
-![image](https://user-images.githubusercontent.com/29199486/199000938-83114bdd-4535-4108-902b-65face7cecb9.png)
+![image](https://user-images.githubusercontent.com/29199486/199003444-1e071375-d815-4b9f-acf2-8bb05a3f5cff.png)
+
 
 
 
