@@ -1,6 +1,16 @@
 # AngularCurrencyConvertor
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.3 and Bootstrap version 4.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.3 and Bootstrap version 4 and Chart.JS for historical chart.
+
+## Authentication Interceptor
+This project has Auth Interceptor to add Secuirty token to each API call
+
+## AuthGaurd
+This project has AuthGaurd with canActivate feature, currently it is returning true.One can add more conditions to let authorized users access any particular section.
+
+## RxJS Operators
+This project has multiple RxJS operators such as observables, takeUntill, Subject
+
 
 ## Prerequisites
   npm - Package Manager
@@ -44,7 +54,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/29199486/198958233-f44c4082-249f-437c-bd67-0b6d67710982.png">
 
-<img width="944" alt="image" src="https://user-images.githubusercontent.com/29199486/198842605-1bfc6539-f52c-41ec-b3c4-4da30439903c.png">
+##Test Coverage
+![image](https://user-images.githubusercontent.com/29199486/199000938-83114bdd-4535-4108-902b-65face7cecb9.png)
+
 
 
 
