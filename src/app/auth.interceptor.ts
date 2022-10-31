@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     request = request.clone({
       setHeaders: {
-        'apikey': 'fxTrCzfOMC2hapiWwf3q5SBL2462SNwb',
+        'apikey': 'aSM6XK2wVmlN485jqDdnEnRgr1gIo1wB',
       }
     });
 
