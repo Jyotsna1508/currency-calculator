@@ -32,8 +32,8 @@ describe('CurrencyConvertorFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
   it('on ngOnInit', () => {
+    window.sessionStorage.removeItem('formDetails');
     spyOn(component, 'getExchangeRates');
     component.ngOnInit();
     expect(component.getExchangeRates).toHaveBeenCalled();

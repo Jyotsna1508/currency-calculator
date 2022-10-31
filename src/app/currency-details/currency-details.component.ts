@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { CurrencyConstants } from '../shared/constants';
 import { Currency } from '../shared/enums/currency';
 import { HistorialDataI, historicalGraphDataI, rateI, SymbolsDataI } from '../shared/interfaces/conversion-response';
+import { AppliedConversionData } from '../shared/interfaces/coversion-data';
 import { StringStringPair } from '../shared/interfaces/string-number-pair';
 import { CurrencySymbolsService } from '../shared/services/currency-symbols.service';
 import { HistoricalDataService } from '../shared/services/historical-data.service';
@@ -48,7 +49,13 @@ export class CurrencyDetailsComponent implements OnInit, OnDestroy {
     this.getCurrencyMapping();
     this.getHistoricalData();
   }
-
+  updatedHistoricalConversion(filteredConversion: AppliedConversionData){
+    this.fromCurrency = filteredConversion.fromCurrency;
+    this.toCurrencyHeader = filteredConversion.toCurrency;
+    this.fromCurrencyHeader =  this.symbolData ? `${this.fromCurrency} - ${
+    this.symbolData[this.fromCurrency]}` :`${this.fromCurrency}`;
+    this.getHistoricalData();
+  }
   getCurrencyMapping() {
     this.currencySymbolsService.getCurrencySymbols()
     .pipe(takeUntil(this.destroy))

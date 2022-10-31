@@ -26,6 +26,7 @@ export class CurrencyConverterFormComponent implements OnInit {
   });
   fromCurrencyRate: number = 0;
   toCurrencyRate: number = 0;
+  disabledConvertButton: boolean = false;
   exchangeRates: ExchangeRates = CurrencyConstants.exchangeRates;
   conversions = CurrencyConstants.displayedCountry;
   result: string = '0';
@@ -51,6 +52,7 @@ export class CurrencyConverterFormComponent implements OnInit {
 
   ngOnInit(): void {
     let parsedFormData;
+    this.disabledConvertButton = this.showMoreDetails;
     this.currencyConverterForm = this.initForm(
       this.fromDropdownName,
       this.toDropdownName,
@@ -123,8 +125,11 @@ export class CurrencyConverterFormComponent implements OnInit {
   conversionTypechange() {
     this.toCurrencyRate = this.exchangeRates.rates[this.toDropdownName];
     this.fromCurrencyRate = this.exchangeRates.rates[this.fromDropdownName];
-    if (sessionStorage.getItem('forDetails')){
+    if (sessionStorage.getItem('formDetails')){
       this.result = '0';
+    }
+    if (!this.showMoreDetails){
+      this.disabledConvertButton = true;
     }
   }
 

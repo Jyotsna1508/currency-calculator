@@ -2,8 +2,7 @@ import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CurrencyConstants } from 'src/app/shared/constants';
 import { HistoricalDataComponent } from './historical-data.component';
-import { Chart } from 'chart.js';
-import { Subject } from 'rxjs';
+import { Chart, ChartConfiguration, ChartItem } from 'chart.js';
 describe('HistoricalDataComponent', () => {
   let component: HistoricalDataComponent;
   let fixture: ComponentFixture<HistoricalDataComponent>;

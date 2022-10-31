@@ -58,6 +58,16 @@ describe('CurrencyDetailsComponent', () => {
     tick();
     expect(component.historicalData).toEqual(CurrencyConstants.mockedHistoricalData.rates);
   }));
+  it('on getHistoricalRates and show error for error', fakeAsync(() => {
+    component.destroy = new Subject<boolean>();
+    const service = TestBed.inject(HistoricalDataService);
+    const errorResponse=new Error('403 errror');
+    spyOn(console, 'error');
+    spyOn(service,'getHistoricalRates').and.returnValue(throwError(errorResponse));
+    component.getHistoricalData();
+    tick();
+    expect(console.error).toHaveBeenCalledWith('Error: 403 errror');
+  }));
   it('should call getCurrencyMapping and get response from symbol service', fakeAsync(() => {
     const service = TestBed.inject(CurrencySymbolsService);
     spyOn(service,'getCurrencySymbols').and.callFake(() => {
@@ -77,4 +87,14 @@ describe('CurrencyDetailsComponent', () => {
     tick();
     expect(console.error).toHaveBeenCalledWith('Error: 403 errror');
   }));
+  it('should update historical data', () => {
+    let conversionData = {
+      amount: 1,
+      fromCurrency: 'EUR',
+      toCurrency: 'HRK',
+      currencyRates: {}
+    }
+    component.updatedHistoricalConversion(conversionData);
+    expect(component.fromCurrency).toEqual(conversionData.fromCurrency);
+  });
 });

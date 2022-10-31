@@ -10,7 +10,7 @@
     </div>
     <div class="row converter-container">
         <div class="col-sm-12 convertor-form">
-            <app-currency-converter-form></app-currency-converter-form>
+            <app-currency-converter-form (sendSelectedFilter)="updatedHistoricalConversion($event)"></app-currency-converter-form>
         </div>
         <div class="col-sm-12">
             <app-historical-data [historicalGraphData]="historicalGraphData"></app-historical-data>
