@@ -72,6 +72,7 @@ export class CurrencyConverterFormComponent implements OnInit {
       this.currencyConverterForm.controls[FormNames.Amount].setValue(this.amount);
       this.initForm(parsedFormData.fromDropdownName, parsedFormData.toDropdownName, parsedFormData.amount)
       this.showLoader = false;
+      this.sendUpdatedFilterdata();
     } else {
       this.getExchangeRates(Currency.EUR);
     }
@@ -125,7 +126,7 @@ export class CurrencyConverterFormComponent implements OnInit {
   conversionTypechange() {
     this.toCurrencyRate = this.exchangeRates.rates[this.toDropdownName];
     this.fromCurrencyRate = this.exchangeRates.rates[this.fromDropdownName];
-    if (sessionStorage.getItem('formDetails')){
+    if (!sessionStorage.getItem('formDetails')){
       this.result = '0';
     }
     if (!this.showMoreDetails){
