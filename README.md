@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 This project has Auth Interceptor to add Secuirty token to each API call
 
 ## AuthGaurd
-This project has AuthGaurd with canActivate feature, currently it is returning true.One can add more conditions to let authorized users access any particular section.
+This project has AuthGaurd with canActivate feature.It is base guard and any authorization related to code can be added as per requirement
 
 ## RxJS Operators
 This project has multiple RxJS operators such as observables, takeUntill, Subject
