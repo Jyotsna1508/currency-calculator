@@ -51,7 +51,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Application Screenshot
 <img width="949" alt="image" src="https://user-images.githubusercontent.com/29199486/198946122-7db81fd5-6830-4ee0-bd05-e02fcd810601.png">
-![image](https://user-images.githubusercontent.com/29199486/199003353-90954e52-1173-4d3a-b391-af33b3ece845.png)
+
+![image](https://user-images.githubusercontent.com/29199486/199003535-c8fde35b-5815-4639-89dc-491ae2d8ba1f.png)
+
 
 
 ##Test Coverage
