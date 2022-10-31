@@ -34,7 +34,7 @@ export const CurrencyConstants = {
     },
     {
       id: 5,
-      name: 'CAD',
+      name: 'NOK',
     },
     {
       id: 6,
@@ -46,10 +46,10 @@ export const CurrencyConstants = {
     },
     {
       id: 8,
-      name: 'USD',
+      name: 'PYG',
     },
     {
-      id: 8,
+      id: 9,
       name: 'USD',
     },
   ],
@@ -167,21 +167,79 @@ export const CurrencyConstants = {
       BDT: 'Bangladeshi Taka',
       BGN: 'Bulgarian Lev',
       BHD: 'Bahraini Dinar',
+      HRK: 'HRK',
+      EUR: 'EUR'
     },
   },
   mockConvertionData: {
-    "date": "2022-10-29",
-    "historical": true,
-    "info": {
-      "rate": 0.996462,
-      "timestamp": 1667005503
+    date: '2022-10-29',
+    historical: true,
+    info: {
+      rate: 0.996462,
+      timestamp: 1667005503,
     },
-    "query": {
-      "amount": 6,
-      "from": "EUR",
-      "to": "USD"
+    query: {
+      amount: 6,
+      from: 'EUR',
+      to: 'USD',
     },
-    "result": 5.978772,
-    "success": true
-  }
+    result: 5.978772,
+    success: true,
+  },
+  mockedCurrencyList: [
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'AUD',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'HRK',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'INR',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'CAD',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'CHF',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'CNY',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'EUR',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'JPY',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+    {
+      fromCurrencyname: 'EUR',
+      toCurrencyName: 'USD',
+      fromAmount: 1,
+      toAmount: '1.77124',
+    },
+  ],
 };

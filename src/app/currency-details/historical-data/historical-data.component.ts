@@ -2,37 +2,46 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
 } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
-import { rateI } from 'src/app/shared/interfaces/conversion-response';
+import { historicalGraphDataI, rateI } from 'src/app/shared/interfaces/conversion-response';
 @Component({
   selector: 'app-historical-data',
   templateUrl: './historical-data.component.html',
   styleUrls: ['./historical-data.component.scss'],
 })
-export class HistoricalDataComponent implements OnChanges {
+export class HistoricalDataComponent implements OnChanges, OnDestroy {
   public chart: any;
-  @Input() fromCurrencyHeader: string = '';
-  @Input() toCurrencyHeader: string = '';
-  @Input() historicalData: rateI = {};
+  fromCurrencyHeader: string = '';
+  toCurrencyHeader: string = '';
+  historicalData: rateI = {};
+  @Input() historicalGraphData: historicalGraphDataI = {
+    fromCurrencyHeader: '',
+    toCurrencyHeader: '',
+    historicalData: {}
+  };
+  fromCurrencyData: Array<number> = [];
+  toCurrencyData: Array<number> = [];
   constructor() {
     Chart.register(...registerables);
   }
   ngOnChanges(changes: SimpleChanges) {
-    this.fromCurrencyHeader = changes.fromCurrencyHeader.currentValue;
-    this.toCurrencyHeader = changes.toCurrencyHeader.currentValue;
-    this.historicalData = changes.historicalData.currentValue;
+    this.fromCurrencyHeader = changes.historicalGraphData.currentValue.fromCurrencyHeader;
+    this.toCurrencyHeader = changes.historicalGraphData.currentValue.toCurrencyHeader;;
+    this.historicalData = changes.historicalGraphData.currentValue.historicalData;
     this.createChart();
   }
 
   createChart() {
-    let toCurrencyData = [];
-    let fromCurrencyData = [];
+    if (this.chart) this.chart.destroy(); 
+    this.toCurrencyData = [];
+    this.fromCurrencyData = [];
     const xAxesLabels = Object.keys(this.historicalData);
     for (let rate in this.historicalData){
-      toCurrencyData.push(this.historicalData[rate][this.toCurrencyHeader]);
-      fromCurrencyData.push(this.historicalData[rate][this.fromCurrencyHeader]);
+      this.toCurrencyData.push(this.historicalData[rate][this.toCurrencyHeader]);
+      this.fromCurrencyData.push(this.historicalData[rate][this.fromCurrencyHeader]);
     }
     this.chart = new Chart('MyChart', {
       type: 'line',
@@ -41,12 +50,12 @@ export class HistoricalDataComponent implements OnChanges {
         datasets: [
           {
             label: this.fromCurrencyHeader,
-            data: fromCurrencyData,
+            data: this.fromCurrencyData,
             backgroundColor: 'blue',
           },
           {
             label: this.toCurrencyHeader,
-            data: toCurrencyData,
+            data: this.toCurrencyData,
             backgroundColor: 'limegreen',
           },
         ],
@@ -69,5 +78,9 @@ export class HistoricalDataComponent implements OnChanges {
         },
       },
     });
+  }
+
+  ngOnDestroy(): void{
+    this.chart.destroy();
   }
 }

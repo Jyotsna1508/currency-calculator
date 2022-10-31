@@ -32,3 +32,9 @@ export interface rateI {
     [key: string]: number;
   };
 }
+
+export interface historicalGraphDataI {
+  fromCurrencyHeader: string;
+  toCurrencyHeader: string;
+  historicalData: rateI;
+}

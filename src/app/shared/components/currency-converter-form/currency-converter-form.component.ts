@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { Subject } from 'rxjs/internal/Subject';
 import { CurrencyConstants } from '../../constants';
 import { Currency } from '../../enums/currency';
 import { FormNames } from '../../enums/form-names';
@@ -31,27 +33,50 @@ export class CurrencyConverterFormComponent implements OnInit {
   fromDropdownName: string = Currency.EUR;
   toDropdownName: string = Currency.HRK;
   formNames = FormNames;
+  showLoader: boolean = true;
+  destroy: Subject<boolean> = new Subject<boolean>();
   @Input() showMoreDetails: boolean = false
   @Output() sendSelectedFilter = new EventEmitter;
   constructor(private formBuilder: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private exchangeRatesService: ExchangeRatesService,
-    private cdr: ChangeDetectorRef) {}
+    private cdr: ChangeDetectorRef) {
+      this.activatedRoute.queryParams.subscribe(
+        (params: any)=>{
+          this.fromDropdownName = params['from'] || Currency.EUR;
+          this.toDropdownName = params['to'] || Currency.HRK;
+    });
+    }
 
   ngOnInit(): void {
-    this.fromDropdownName =
-    this.activatedRoute.snapshot.queryParams['from'] || Currency.EUR;
-    this.toDropdownName =
-    this.activatedRoute.snapshot.queryParams['to'] || Currency.HRK;
+    let parsedFormData;
     this.currencyConverterForm = this.initForm(
       this.fromDropdownName,
-      this.toDropdownName
+      this.toDropdownName,
+      1
     );
-    this.getExchangeRates(Currency.EUR);
+    let getFormData = sessionStorage.getItem('formDetails') || '';
+    if (getFormData){
+      parsedFormData = JSON.parse(getFormData);
+    }
+    if (parsedFormData){
+      this.exchangeRates.rates = parsedFormData?.currencyRates;
+      this.amount = parsedFormData.amount;
+      this.toDropdownName = parsedFormData.toDropdownName;
+      this.fromDropdownName = parsedFormData.fromDropdownName;
+      this.result = parsedFormData.result;
+      this.toCurrencyRate = parsedFormData.toCurrencyRate;
+      this.currencyConverterForm.controls[FormNames.Amount].setValue(this.amount);
+      this.initForm(parsedFormData.fromDropdownName, parsedFormData.toDropdownName, parsedFormData.amount)
+      this.showLoader = false;
+    } else {
+      this.getExchangeRates(Currency.EUR);
+    }
     this.cdr.detectChanges();
   }
   convertCurrency() {
+    sessionStorage.removeItem('formDetails');
     this.fromCurrencyRate =
       this.exchangeRates.rates[
         this.currencyConverterForm.get(FormNames.FromCurrency)?.value
@@ -73,6 +98,7 @@ export class CurrencyConverterFormComponent implements OnInit {
   getExchangeRates(baseCurrencyCode: string) {
     this.exchangeRatesService
       .getLatestExchangeRates(baseCurrencyCode)
+      .pipe(takeUntil(this.destroy))
       .subscribe(
         (exchangeRate: ExchangeRates): void => {
           this.exchangeRates = exchangeRate;
@@ -86,16 +112,20 @@ export class CurrencyConverterFormComponent implements OnInit {
             ];
             this.convertCurrency();
             this.sendUpdatedFilterdata();
+            this.showLoader = false;
         },
         (error: Error): void => {
           console.error(`Error: ${error.message}`);
+          this.showLoader = false;
         });
   }
 
   conversionTypechange() {
     this.toCurrencyRate = this.exchangeRates.rates[this.toDropdownName];
     this.fromCurrencyRate = this.exchangeRates.rates[this.fromDropdownName];
-    this.result = '0';
+    if (sessionStorage.getItem('forDetails')){
+      this.result = '0';
+    }
   }
 
   swapCurrencies() {
@@ -116,19 +146,28 @@ export class CurrencyConverterFormComponent implements OnInit {
     this.sendSelectedFilter.emit({
       amount: this.amount,
       fromCurrency: this.fromDropdownName,
-      toCurrency: this.toCurrencyRate,
+      toCurrency: this.toDropdownName,
       currencyRates: this.exchangeRates.rates
     });
   }
   navigateToCurrencyDetails(){
+    let formData = {
+      toDropdownName: this.toDropdownName,
+      fromDropdownName: this.fromDropdownName,
+      amount: this.amount,
+      currencyRates: this.exchangeRates.rates,
+      result: this.result,
+      toCurrencyRate: this.toCurrencyRate
+    }
+    sessionStorage.setItem('formDetails', JSON.stringify(formData));
     this.router.navigate(
       ['/exchange-details'],
       { queryParams: { from: this.fromDropdownName, to: this.toDropdownName } }
     );
   }
-  private initForm(fromCurrency: string, toCurrency: string) {
+  private initForm(fromCurrency: string, toCurrency: string, amount: number) {
     return this.formBuilder.group({
-      amount: [1, Validators.required],
+      amount: [amount, Validators.required],
       fromCurrency: [fromCurrency, Validators.required],
       toCurrency: [toCurrency, Validators.required],
     });
@@ -136,5 +175,10 @@ export class CurrencyConverterFormComponent implements OnInit {
 
   private calculateExchangeRate(fromRate: number, toRate: number): string {
     return ((this.amount * toRate) / fromRate).toFixed(5);
+  }
+
+  ngOnDestroy(): void{
+    this.destroy.next(true);
+    this.destroy.unsubscribe();
   }
 }

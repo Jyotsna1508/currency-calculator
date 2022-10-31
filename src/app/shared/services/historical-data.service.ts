@@ -7,7 +7,7 @@ import { HistorialDataI } from '../interfaces/conversion-response';
   providedIn: 'root'
 })
 export class HistoricalDataService {
-  private readonly apiEndpoint = 'https://api.apilayer.com/fixer/';
+  private readonly apiEndpoint = 'https://api.apilayer.com/fixer';
   constructor(private readonly http: HttpClient) { }
 
   getHistoricalRates(startDate: string, endDate: string, baseCurrency: string, symbols: [string, string]): Observable<HistorialDataI> {

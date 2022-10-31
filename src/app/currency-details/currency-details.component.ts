@@ -1,42 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { CurrencyConstants } from '../shared/constants';
 import { Currency } from '../shared/enums/currency';
-import { HistorialDataI, rateI, SymbolsDataI } from '../shared/interfaces/conversion-response';
+import { HistorialDataI, historicalGraphDataI, rateI, SymbolsDataI } from '../shared/interfaces/conversion-response';
+import { StringStringPair } from '../shared/interfaces/string-number-pair';
 import { CurrencySymbolsService } from '../shared/services/currency-symbols.service';
 import { HistoricalDataService } from '../shared/services/historical-data.service';
-
 @Component({
   selector: 'app-currency-details',
   templateUrl: './currency-details.component.html',
   styleUrls: ['./currency-details.component.scss'],
 })
-export class CurrencyDetailsComponent implements OnInit {
+export class CurrencyDetailsComponent implements OnInit, OnDestroy {
   fromCurrency: string = Currency.EUR;
   fromCurrencyHeader: string = '';
   toCurrencyHeader: string = Currency.HRK;
+  historicalGraphData: historicalGraphDataI = {
+    fromCurrencyHeader: '',
+    toCurrencyHeader: '',
+    historicalData: {}
+  };
+  symbolData: StringStringPair = CurrencyConstants.mockSymbolData.symbols;
   historicalData: rateI = CurrencyConstants.rates;
+  destroy: Subject<boolean> = new Subject<boolean>();
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private currencySymbolsService: CurrencySymbolsService,
     private historicalDataService: HistoricalDataService
-  ) {}
+  ) {
+    this.activatedRoute.queryParams
+    .pipe(takeUntil(this.destroy))
+    .subscribe(
+      (params: any)=>{
+        this.fromCurrency = params['from'] || Currency.EUR;
+        this.toCurrencyHeader = params['to'] || Currency.HRK;
+        this.fromCurrencyHeader =  this.symbolData ? `${this.fromCurrency} - ${
+        this.symbolData[this.fromCurrency]}` :`${this.fromCurrency}`;
+        this.getHistoricalData();
+
+  });
+  }
 
   ngOnInit(): void {
-    this.fromCurrency =
-      this.activatedRoute.snapshot.queryParams['from'] || Currency.EUR;
-    this.fromCurrencyHeader = `${this.fromCurrency}`;
-    this.toCurrencyHeader =
-      this.activatedRoute.snapshot.queryParams['to'] || Currency.HRK;
     this.getCurrencyMapping();
     this.getHistoricalData();
   }
 
   getCurrencyMapping() {
-    this.currencySymbolsService.getCurrencySymbols().subscribe(
+    this.currencySymbolsService.getCurrencySymbols()
+    .pipe(takeUntil(this.destroy))
+    .subscribe(
       (symbolsData: SymbolsDataI): void => {
         if (symbolsData && symbolsData.symbols) {
+          this.symbolData = symbolsData.symbols;
           this.fromCurrencyHeader = `${this.fromCurrency} - ${
             symbolsData.symbols[this.fromCurrency]
           }`;
@@ -51,10 +70,17 @@ export class CurrencyDetailsComponent implements OnInit {
   getHistoricalData(){
     let startDate = '2021-01-22';
     let endDate = '2021-08-22';
-    this.historicalDataService.getHistoricalRates(startDate,endDate,Currency.EUR,[this.fromCurrency, this.toCurrencyHeader]).subscribe(
+    this.historicalDataService.getHistoricalRates(startDate,endDate,Currency.EUR,[this.fromCurrency, this.toCurrencyHeader])
+    .pipe(takeUntil(this.destroy))
+    .subscribe(
       (historicalData: HistorialDataI): void => {
         if(historicalData && historicalData.rates){
           this.historicalData = historicalData.rates;
+          this.historicalGraphData = {
+            toCurrencyHeader:  this.toCurrencyHeader,
+            fromCurrencyHeader: this.fromCurrency,
+            historicalData: this.historicalData
+          }
         }       
       },
       (error: Error): void => {
@@ -64,5 +90,9 @@ export class CurrencyDetailsComponent implements OnInit {
   }
   navigateToCurrencyDetails() {
     this.router.navigateByUrl('/currency-converter');
+  }
+  ngOnDestroy(): void{
+    this.destroy.next(true);
+    this.destroy.unsubscribe();
   }
 }

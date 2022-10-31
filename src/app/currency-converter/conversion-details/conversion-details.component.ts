@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { CurrencyConstants } from 'src/app/shared/constants';
 import { Currency } from 'src/app/shared/enums/currency';
 import { ConversionDetailData } from 'src/app/shared/interfaces/conversion-details';
 import { AppliedConversionData } from 'src/app/shared/interfaces/coversion-data';
@@ -23,16 +24,17 @@ export class ConversionDetailsComponent implements OnChanges {
     this.createConversionCards();
   }
 
-  private createConversionCards(){
+  createConversionCards(){
     this.currenciesList = [];
-    for (let key in this.appliedConversionFilter.currencyRates){
-      let toRate = this.appliedConversionFilter.currencyRates[this.appliedConversionFilter?.toCurrency];
-      let fromRate = this.appliedConversionFilter.currencyRates[this.appliedConversionFilter?.fromCurrency];
+    for (let key in CurrencyConstants.displayedCountry){
+      let toRate = this.appliedConversionFilter.currencyRates?.[CurrencyConstants.displayedCountry[key].name];
+      let fromRate = this.appliedConversionFilter.currencyRates?.[this.appliedConversionFilter?.fromCurrency];
       let currenyConversionDetail = {
         fromCurrencyname: this.appliedConversionFilter.fromCurrency,
-        toCurrencyName: key,
+        toCurrencyName: CurrencyConstants.displayedCountry[key].name,
         fromAmount: this.appliedConversionFilter.amount,
-        toAmount: ((this.appliedConversionFilter.amount * toRate) / fromRate).toFixed(5)
+        toAmount: this.appliedConversionFilter.amount && toRate && fromRate ?
+        (((this.appliedConversionFilter.amount) * toRate) / fromRate).toFixed(5): ''
       }
       this.currenciesList.push(currenyConversionDetail);
     }

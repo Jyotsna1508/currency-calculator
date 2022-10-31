@@ -21,8 +21,20 @@ describe('CurrencyConverterComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   it('should contain "Currency Exchange"', () => {
     const bannerElement: HTMLElement = fixture.nativeElement;
     expect(bannerElement.textContent).toContain('Currency Exchange');
+  });
+
+  it('should contain "Currency Exchange"', () => {
+    let conversionData = {
+      amount: 1,
+      fromCurrency: 'EUR',
+      toCurrency: 'HRK',
+      currencyRates: {}
+    }
+    component.updatedAppliedConversion(conversionData);
+    expect(component.updatedAppliedConversionData).toEqual(conversionData);
   });
 });
