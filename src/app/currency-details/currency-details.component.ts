@@ -7,8 +7,8 @@ import { Currency } from '../shared/enums/currency';
 import { HistorialDataI, historicalGraphDataI, rateI, SymbolsDataI } from '../shared/interfaces/conversion-response';
 import { AppliedConversionData } from '../shared/interfaces/coversion-data';
 import { StringStringPair } from '../shared/interfaces/string-number-pair';
-import { CurrencySymbolsService } from '../shared/services/currency-symbols.service';
-import { HistoricalDataService } from '../shared/services/historical-data.service';
+import { CurrencySymbolsService } from '../shared/services/currency-symbols-api.service';
+import { HistoricalDataService } from '../shared/services/historical-data-api.service';
 @Component({
   selector: 'app-currency-details',
   templateUrl: './currency-details.component.html',
@@ -76,7 +76,7 @@ export class CurrencyDetailsComponent implements OnInit, OnDestroy {
 
   getHistoricalData(){
     let startDate = '2021-01-22';
-    let endDate = '2021-08-22';
+    let endDate = '2021-10-22';
     this.historicalDataService.getHistoricalRates(startDate,endDate,Currency.EUR,[this.fromCurrency, this.toCurrencyHeader])
     .pipe(takeUntil(this.destroy))
     .subscribe(

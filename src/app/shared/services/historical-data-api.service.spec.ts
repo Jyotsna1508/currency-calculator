@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController} from '@angular/common/h
 import { TestBed } from '@angular/core/testing';
 import { CurrencyConstants } from '../constants';
 
-import { HistoricalDataService } from './historical-data.service';
+import { HistoricalDataService } from './historical-data-api.service';
 
 describe('HistoricalDataService', () => {
   let service: HistoricalDataService;

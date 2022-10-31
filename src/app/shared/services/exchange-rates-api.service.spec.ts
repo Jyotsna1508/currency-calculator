@@ -3,7 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { CurrencyConstants } from '../constants';
 
-import { ExchangeRatesService } from './exchange-rates.service';
+import { ExchangeRatesService } from './exchange-rates-api.service';
 
 describe('ExchangeRatesService', () => {
   let service: ExchangeRatesService;

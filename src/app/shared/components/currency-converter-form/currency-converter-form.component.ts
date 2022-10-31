@@ -12,7 +12,7 @@ import { CurrencyConstants } from '../../constants';
 import { Currency } from '../../enums/currency';
 import { FormNames } from '../../enums/form-names';
 import { ExchangeRates } from '../../interfaces/exchange-rates';
-import { ExchangeRatesService } from '../../services/exchange-rates.service';
+import { ExchangeRatesService } from '../../services/exchange-rates-api.service';
 @Component({
   selector: 'app-currency-converter-form',
   templateUrl: './currency-converter-form.component.html',

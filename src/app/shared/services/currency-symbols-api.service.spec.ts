@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CurrencyConstants } from '../constants';
-
-import { CurrencySymbolsService } from './currency-symbols.service';
+import { CurrencySymbolsService } from './currency-symbols-api.service';
 
 describe('CurrencySymbolsService', () => {
   let service: CurrencySymbolsService;

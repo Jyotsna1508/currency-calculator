@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CurrencyConstants } from '../../constants';
-import { ExchangeRatesService } from '../../services/exchange-rates.service';
+import { ExchangeRatesService } from '../../services/exchange-rates-api.service';
 import * as Rx from 'rxjs';
 import { CurrencyConverterFormComponent } from './currency-converter-form.component';
 import { Subject, throwError } from 'rxjs';

@@ -10,8 +10,8 @@ import { CurrencyConverterFormComponent } from './shared/components/currency-con
 import { ConversionDetailsComponent } from './currency-converter/conversion-details/conversion-details.component';
 import { HistoricalDataComponent } from './currency-details/historical-data/historical-data.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './auth.interceptor';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,

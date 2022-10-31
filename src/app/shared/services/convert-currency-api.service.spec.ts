@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { ConvertCurrencyService } from './convert-currency.service';
+import { ConvertCurrencyService } from './convert-currency-api.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CurrencyConstants } from '../constants';
 describe('ConvertCurrencyService', () => {
