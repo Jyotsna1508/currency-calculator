@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://api.apilayer.com/fixer'
+  baseUrl: 'https://api.apilayer.com/fixer',
+  authToken: 'aSM6XK2wVmlN485jqDdnEnRgr1gIo1wB'
 };
 
 /*
